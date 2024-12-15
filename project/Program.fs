@@ -1,10 +1,13 @@
-﻿
+
 open Microsoft.EntityFrameworkCore
 open Microsoft.Extensions.DependencyInjection
 open System.ComponentModel.DataAnnotations
 open System.ComponentModel.DataAnnotations.Schema
 open System.Linq
 open System
+open System.IO
+open System.Drawing
+open System.Windows.Forms
 
 [<Table("User")>]
 type User() =
@@ -373,7 +376,7 @@ let createBackground (form: Form) =
     )
 
 // Seat Booking Page
-let  showMovieSeats (username: string ,movieId: int,movieName:string )=
+let rec  showMovieSeats (username: string ,movieId: int,movieName:string )=
     let form = new Form(Text = $"Seats for Movie: {movieName}", Size = Size(1000, 600))
     createBackground form
     let  seats = DisplaySeats movieId
@@ -464,7 +467,7 @@ let  showMovieSeats (username: string ,movieId: int,movieName:string )=
 
 
 // Main Page ( Movies page)
-let mainPage (username:string):Form =
+and mainPage (username:string):Form =
     let form = new Form(Text = "Movies", Size = Size(950, 600))
     form.StartPosition <- FormStartPosition.CenterScreen 
 
@@ -535,7 +538,7 @@ let mainPage (username:string):Form =
 
 
 // Signup Page
-let signupPage () =
+and signupPage () =
     let form = new Form(Text = "Sign Up", Size = Size(800, 600))
     form.StartPosition <- FormStartPosition.CenterScreen 
 
@@ -603,7 +606,7 @@ let signupPage () =
 
 
 // Login Page
-let loginPage _ :Form =
+and loginPage _ :Form =
 
     let form = new Form(Text = "Login", Size = Size(800, 600)) 
     form.StartPosition <- FormStartPosition.CenterScreen 
@@ -642,7 +645,7 @@ let loginPage _ :Form =
     
     btnSignup.Click.AddHandler(EventHandler(fun _ _ ->
         
-       // signupPage().Show()
+        signupPage().Show()
 
     ))
     form.Controls.Add(lblUsername)
