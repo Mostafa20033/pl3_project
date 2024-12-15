@@ -99,6 +99,5 @@ To run this project, ensure you have the following installed:
 This project is licensed under the MIT License. Feel free to use, modify, and distribute it as per the license terms.
 
 ---
-
 Enjoy using the Cinema Seat Reservation System! 🎥🍿
-
+# Thank 
