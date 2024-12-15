@@ -334,7 +334,7 @@ let bookCancle movieId username row column=
 
 
 // Login Page
-and loginPage _ :Form =
+let loginPage _ :Form =
 
     let form = new Form(Text = "Login", Size = Size(800, 600)) 
     form.StartPosition <- FormStartPosition.CenterScreen 
