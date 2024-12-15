@@ -104,6 +104,18 @@ type UserService(dbContext: AppDbContext) =
         dbContext.SaveChanges() |> ignore
         printfn "Movie added successfully!"
 
+    /////zainab//////
+    member this.GetUserByCred(username: string, password: string)=
+       let user=dbContext.Set<User>().FirstOrDefault(fun m -> m.Username=username && m.Password=password)
+       Option.ofObj user
+
+    member this.GetUserByName(name: string)=
+       let user=dbContext.Set<User>().FirstOrDefault(fun u -> u.Name =name)
+       Option.ofObj user
+
+
+       /////zaineb//////
+
         //////mariam//////
     member this.AddSeat(row: int,column: int, movieId: int)=
         let seat = Seat(Row=row,Column=column,MovieId = movieId)
@@ -134,11 +146,35 @@ let userService = UserService(dbContext)
 
 
 
+////////zaineb////////
+
+let login username password =
+    let user = userService.GetUserByCred(username, password)
+    match user with 
+    |Some user -> user.Name
+    |None -> ""
+
+
+//signup
+let signup name phonenumber username password=
+    if name = "" || username= "" || password = "" then
+        "please fill all fields"
+    else
+    let user = userService.GetUserByCred(username, password)
+    match user with 
+    |Some user -> "user exist"
+    |None ->  match userService.GetUserByName(name)  with
+                | Some user -> "this name exist before"
+                | None -> userService.AddUser(name,phonenumber,username,password)
+
+
+
+
 // Add a new user
 //userService.AddUser("Alice", 1234567890, "password123", "alice")
 ////userService.AddMovie("awlad_rezk", DateOnly(2024, 12, 10))
 
-
+/////zaineb/////
 
 /////////////mariam/////////
 
