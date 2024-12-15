@@ -98,25 +98,14 @@ type UserService(dbContext: AppDbContext) =
     member this.GetAllUsers()=
         dbContext.Set<User>().ToList()|> List.ofSeq
 
-    member this.AddMovie(moviename: string,showtime: DateOnly) =
-        let movie =Movie(MovieName=moviename,Showtime=showtime)
-        dbContext.Add(movie) |> ignore
-        dbContext.SaveChanges() |> ignore
-        printfn "Movie added successfully!"
-
-    /////zainab///////
     member this.GetUserByCred(username: string, password: string)=
-       let user=dbContext.Set<User>().FirstOrDefault(fun m -> m.Username=username && m.Password=password)
-       Option.ofObj user
+        let user=dbContext.Set<User>().FirstOrDefault(fun m -> m.Username=username && m.Password=password)
+        Option.ofObj user
 
     member this.GetUserByName(name: string)=
-       let user=dbContext.Set<User>().FirstOrDefault(fun u -> u.Name =name)
-       Option.ofObj user
+        let user=dbContext.Set<User>().FirstOrDefault(fun u -> u.Name =name)
+        Option.ofObj user
 
-
-       /////zaineb//////
-
-        //////mariam//////
     member this.AddSeat(row: int,column: int, movieId: int)=
         let seat = Seat(Row=row,Column=column,MovieId = movieId)
         dbContext.Add(seat) |> ignore
@@ -127,6 +116,12 @@ type UserService(dbContext: AppDbContext) =
         let movie = dbContext.Set<Movie>().FirstOrDefault( fun m -> m.Id =movieId)
         Option.ofObj movie
 
+    member this.AddMovie(moviename: string,showtime: DateOnly) =
+        let movie =Movie(MovieName=moviename,Showtime=showtime)
+        dbContext.Add(movie) |> ignore
+        dbContext.SaveChanges() |> ignore
+        printfn "Movie added successfully!"
+
     member this.GetAllMovies()=
         dbContext.Set<Movie>().ToList() |> List.ofSeq
 
@@ -136,7 +131,31 @@ type UserService(dbContext: AppDbContext) =
     member this.GetSeat(movieId: int, row: int, column: int)=
        let seat= dbContext.Set<Seat>().FirstOrDefault(fun m -> m.MovieId = movieId && m.Row= row && m.Column=column)
        Option.ofObj seat
-       ///mariam////
+
+    member this.BookSeat(movieId: int, row: int, column: int)=
+       let seat= dbContext.Set<Seat>().FirstOrDefault(fun m -> m.MovieId = movieId && m.Row= row && m.Column=column)
+       match Option.ofObj seat with
+       | Some newSeat ->
+                newSeat.isAvailable <- false
+                dbContext.SaveChanges()
+
+    member this.BookCancle(movieId: int, row: int, column: int)=
+       let seat= dbContext.Set<Seat>().FirstOrDefault(fun m -> m.MovieId = movieId && m.Row= row && m.Column=column)
+       match Option.ofObj seat with
+       | Some newSeat ->
+                newSeat.isAvailable <- true
+                dbContext.SaveChanges()
+
+
+    member this.saveTicket(username:string,movieName:string,showTime:DateOnly,seatId:int)=
+       let seat =Ticket(CustomerName=username,MovieName=movieName,Showtime=showTime,SeatId=seatId)
+       dbContext.Add(seat) |>ignore
+       dbContext.SaveChanges() |> ignore
+       "ticket Saved"
+
+    member this.getTicket(username:string,seatId:int)=
+        let seat=dbContext.Set<Ticket>().FirstOrDefault(fun t -> t.CustomerName=username && t.SeatId=seatId)
+        Option.ofObj seat
 
 let optionsBuilder = DbContextOptionsBuilder<AppDbContext>()
 optionsBuilder.UseSqlServer("Data Source=ZENOO;Initial Catalog=PL3_Project;Integrated Security=True;Connect Timeout=30;Encrypt=False;
