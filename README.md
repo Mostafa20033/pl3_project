@@ -100,4 +100,4 @@ This project is licensed under the MIT License. Feel free to use, modify, and di
 
 ---
 Enjoy using the Cinema Seat Reservation System!
-# Thank 
+# Thanks
