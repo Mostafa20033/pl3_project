@@ -325,7 +325,101 @@ let bookCancle movieId username row column=
 
 
 
+
+
+
+
 /////////zanon////////////////
+
+// Seat Booking Page
+let  showMovieSeats (username: string ,movieId: int,movieName:string )=
+    let form = new Form(Text = $"Seats for Movie: {movieName}", Size = Size(1000, 600))
+    createBackground form
+    let  seats = DisplaySeats movieId
+    let seatWidth, seatHeight = 80, 60
+    let horizontalSpacing, verticalSpacing = 20, 20
+    let groupSpacing = 40 
+
+   
+    let seatsPerRow = 8
+    let totalWidth = seatsPerRow * (seatWidth + horizontalSpacing) - horizontalSpacing + groupSpacing
+    let startX = (form.ClientSize.Width - totalWidth) / 2
+    let startY = 100 
+
+    let seatButtons =
+        seats
+        |> List.mapi (fun i (row, col, available) ->
+            let offset = if (i % seatsPerRow) >= seatsPerRow / 2 then groupSpacing else 0
+            let seatButton = new Button(
+                Text = $"{row},{col}",
+                Size = Size(seatWidth, seatHeight),
+                Location = Point(
+                    startX + (i % seatsPerRow) * (seatWidth + horizontalSpacing) + offset,
+                    startY + (i / seatsPerRow) * (seatHeight + verticalSpacing)
+                ),
+                BackColor = if available then Color.Green else Color.Red
+            )
+            let mutable AV =available
+            seatButton.Click.AddHandler(EventHandler(fun _ _ ->
+                if AV && seatButton.BackColor =Color.Green then
+                    let result = bookSeat username movieId row col
+                    MessageBox.Show(result) |> ignore
+                    AV <- false
+                    seatButton.BackColor <- Color.Red
+                else
+                    let mutable checkTicket = checkTicket movieId username row col
+                    if checkTicket && seatButton.BackColor =Color.Red then
+                        //let cancelForm = new Form(Text = "Cancel Booking?", Size = Size(350, 200))
+                        //let cancelBtnOk = new Button(Text = "OK", Location = Point(200, 100))
+                        //let cancelBtnNo = new Button(Text = "Cancel", Location = Point(50, 100))
+                        //cancelForm.Controls.Add(cancelBtnOk)
+                        //cancelForm.Controls.Add(cancelBtnNo)
+                        //cancelForm.Show()
+                        let message =MessageBox.Show("Do you want to cancel your reservation?", "Cancel Reservation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                        if message= DialogResult.Yes then
+                            MessageBox.Show(bookCancle movieId username row col) |> ignore
+                            seatButton.BackColor <- Color.Green
+                            AV <- true
+
+                        //cancelBtnNo.Click.AddHandler(EventHandler(fun _ _ -> cancelForm.Hide()))
+                        //cancelBtnOk.Click.AddHandler(EventHandler(fun _ _ ->
+                        //    MessageBox.Show(bookCancle movieId username row col) |> ignore
+                        //    cancelForm.Hide()
+                        //    seatButton.BackColor <- Color.Green
+                        //))
+                    else
+                        MessageBox.Show("This seat is reserved by someone else.") |> ignore
+            ))
+            form.Controls.Add(seatButton)
+        )
+
+    let screenLabel = new Label(
+        Text = "Seats",
+        Location = Point((form.ClientSize.Width - 500) / 2, 50),
+        Size = Size(500, 40),
+        Font = new Font("Arial", 18.0f, FontStyle.Bold),
+        ForeColor = Color.Black,
+        TextAlign = ContentAlignment.MiddleCenter,
+        BackColor = Color.LightGray
+    )
+    form.Controls.Add(screenLabel)
+
+    let backButton = new Button(
+        Text = "Back to Movies",
+        Location = Point(10, 10),
+        Size = Size(150, 40),
+        BackColor = Color.DarkRed,
+        ForeColor = Color.White,
+        FlatStyle = FlatStyle.Flat
+    )
+    backButton.Click.Add(fun _ ->
+        form.Hide() 
+        (mainPage username).Show()
+    )
+    form.FormClosed.Add(fun _ -> Application.Exit())
+    form.Controls.Add(backButton)
+    form
+
 
 
 // Main Page ( Movies page)
