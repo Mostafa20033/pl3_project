@@ -104,7 +104,7 @@ type UserService(dbContext: AppDbContext) =
         dbContext.SaveChanges() |> ignore
         printfn "Movie added successfully!"
 
-    /////zainab//////
+    /////zainab///////
     member this.GetUserByCred(username: string, password: string)=
        let user=dbContext.Set<User>().FirstOrDefault(fun m -> m.Username=username && m.Password=password)
        Option.ofObj user
