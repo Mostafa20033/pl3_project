@@ -62,7 +62,7 @@ Add screenshots of your application here! Here are some ideas:
 ![Screenshot 2024-12-14 125742](https://github.com/user-attachments/assets/86cdf6aa-10c8-42c5-8bc7-7e80cd924ecb)
 ![Screenshot 2024-12-14 125732](https://github.com/user-attachments/assets/f99349eb-3b86-4c48-aff0-6d9eb8c9920a)
 
-Make sure to replace `path/to/...` with the actual paths to your images in the repository.
+ 
 
 ---
 
@@ -99,5 +99,5 @@ To run this project, ensure you have the following installed:
 This project is licensed under the MIT License. Feel free to use, modify, and distribute it as per the license terms.
 
 ---
-Enjoy using the Cinema Seat Reservation System! 🎥🍿
+Enjoy using the Cinema Seat Reservation System!
 # Thank 
