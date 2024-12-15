@@ -331,6 +331,47 @@ let bookCancle movieId username row column=
 
 /////////zanon////////////////
 
+
+
+//////////////////////////////////////GUI//////////////////////////
+//////////////////////////////////////GUI//////////////////////////
+//////////////////////////////////////GUI//////////////////////////
+//////////////////////////////////////GUI//////////////////////////
+
+
+
+let createTextBox (x: int) (y: int) =
+    let tb = new TextBox()
+    tb.Location <- Point(x, y)
+    tb.Width <- 100
+    tb
+
+let createLabel (text: string) (x: int) (y: int) =
+    let lbl = new Label()
+    lbl.Text <- text
+    lbl.Location <- Point(x, y)
+    lbl.Width <- 100
+    lbl
+
+let getIntValue ( value : string) =
+        try
+            int value  
+        with
+        | :? System.FormatException -> 0  
+
+       
+let createBackground (form: Form) =
+    form.Paint.Add(fun e ->
+        let g = e.Graphics
+        let rect = form.ClientRectangle
+        try
+            let backgroundImage = Image.FromFile("E:/mostafa/level 4/PL3/project/Cinema Seat Reservation System/Pl3_Project/pictures/cinema.jpg")
+            g.DrawImage(backgroundImage, rect)
+        with
+        | ex -> 
+            MessageBox.Show(sprintf "Error loading background image: %s" ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) |> ignore
+    )
+
 // Seat Booking Page
 let  showMovieSeats (username: string ,movieId: int,movieName:string )=
     let form = new Form(Text = $"Seats for Movie: {movieName}", Size = Size(1000, 600))
