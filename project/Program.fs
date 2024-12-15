@@ -323,6 +323,78 @@ let bookCancle movieId username row column=
 
 ////// amr /////////
 
+
+
+/////////zanon////////////////
+
+
+// Main Page ( Movies page)
+let mainPage (username:string):Form =
+    let form = new Form(Text = "Movies", Size = Size(950, 600))
+    form.StartPosition <- FormStartPosition.CenterScreen 
+
+    let movies = displayMovies
+
+    let moviesSticker = [
+        "E:/mostafa/level 4/PL3/project/Cinema Seat Reservation System/Pl3_Project/pictures/bank-elhaz.jpg";
+        "E:/mostafa/level 4/PL3/project/Cinema Seat Reservation System/Pl3_Project/pictures/el3almy.jpg";
+        "E:/mostafa/level 4/PL3/project/Cinema Seat Reservation System/Pl3_Project/pictures/el3amel zero.jpg";
+        "E:/mostafa/level 4/PL3/project/Cinema Seat Reservation System/Pl3_Project/pictures/el7arefa.jpg";
+        "E:/mostafa/level 4/PL3/project/Cinema Seat Reservation System/Pl3_Project/pictures/kera w elgen.jpg";
+        "E:/mostafa/level 4/PL3/project/Cinema Seat Reservation System/Pl3_Project/pictures/welad rezk.jpg"
+    ]
+    let flowLayoutPanel = new FlowLayoutPanel(Dock = DockStyle.Fill, AutoScroll = true)
+    form.Text <- "Select a Movie"
+    form.BackColor <- Color.FromArgb(40, 0, 0) 
+    form.ForeColor <- Color.White 
+
+
+    let backButton = new Button(
+        Text = "Log Out",
+        Location = Point(10, 10),
+        Size = Size(150, 40),
+        BackColor = Color.DarkRed,
+        ForeColor = Color.White,
+        FlatStyle = FlatStyle.Flat
+    )
+    backButton.Click.Add(fun _ ->
+        form.Hide() // Hide the current form
+        loginPage().Show()
+    )
+    form.Controls.Add(backButton)
+
+    movies
+    |> List.mapi (fun i (id,name, time) ->
+                  let panel = new Panel(Size = Size(200, 320), Margin = Padding(10), BackColor = Color.Transparent)
+                  let pictureBox = new PictureBox(Size = Size(200, 200), SizeMode = PictureBoxSizeMode.StretchImage, ImageLocation = moviesSticker[i])
+                  let label = new Label(Text = name, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Bottom, Font = new Font("Arial", 12.0f, FontStyle.Bold), ForeColor = Color.White)
+                  pictureBox.Location <- Point(0,50)
+                  let movieButton = new Button(Text = "Select", Size = Size(180, 40), Location = Point(10, 255), BackColor = Color.DarkRed, ForeColor = Color.White, FlatStyle = FlatStyle.Flat)
+                  movieButton.Font <- new Font("Arial", 10.0f, FontStyle.Bold)
+                  movieButton.FlatAppearance.BorderSize <- 1
+                  movieButton.FlatAppearance.BorderColor <- Color.White
+                  movieButton.Click.AddHandler(EventHandler(fun _ _ ->
+                                                       (form.Hide()
+                                                        showMovieSeats(username,id,name)).Show() |> ignore
+        
+                     ))
+                  panel.Controls.Add(pictureBox)
+                  panel.Controls.Add(label)
+                  panel.Controls.Add(movieButton)
+                  flowLayoutPanel.Controls.Add(panel)
+                  form.Controls.Add(flowLayoutPanel) ) |> ignore
+    createBackground(form)
+    
+    form.FormClosed.Add(fun _ -> Application.Exit())
+    form
+
+
+
+
+
+
+///////zanon///////////////////
+
 /////////////mostafa waleed/////////////////////////
 
 
