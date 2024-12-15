@@ -239,3 +239,67 @@ let checkAvailablity movieId row column=
 
 
 //////////mariam//////////////
+
+
+
+/////amr/////////
+
+//generate the movie ticket
+let generateTicket (username: string) (showtime: DateOnly) (movieName: string) (seatRow: int) (seatColumn: int) =
+    let fileName = $"{username}_{seatRow}_{seatColumn}.txt"
+    let time =showtime.ToString("yyyy-MM-dd")
+    let content = 
+        $"Username: {username}\n" +
+        $"Showtime: {time}\n" +
+        $"Movie Name: {movieName}\n" +
+        $"Seat Row: {seatRow}\n" +
+        $"Seat Column: {seatColumn}\n"
+
+    File.WriteAllText("E:/mostafa/level 4/PL3/project/Cinema Seat Reservation System/Pl3_Project/files/"+fileName, content)
+    printfn "File generated: %s" fileName
+
+//generateTicket amr DateOnly(2024,12,10) enemy 1 1
+
+// seat booking
+let bookSeat userName movieId row column=
+    let mutable movieName =""
+    let mutable movieTime = DateOnly(2024, 12, 10)
+    let seat =userService.GetSeat(movieId,row,column)
+    match userService.GetMovieById(movieId) with
+    | Some movie -> 
+            movieName <- movie.MovieName
+            movieTime <- movie.Showtime
+    match seat with
+    | Some Seat -> 
+         if Seat.isAvailable=true then
+            userService.BookSeat(movieId,row,column) |> ignore
+            generateTicket userName movieTime movieName Seat.Row Seat.Column
+            userService.saveTicket(userName,movieName,movieTime,Seat.Id) |>ignore
+            "the seat has been booked successfully"
+         else
+            "this seat is reserved"
+    | None -> "there is no seat!"
+
+//bookSeat "mostafa" 2 2 2
+
+let checkTicket movieId username row column =
+    let seat =userService.GetSeat(movieId,row,column)
+    match seat with
+    | Some Seat -> 
+        let ticket = userService.getTicket(username,Seat.Id)
+        match ticket with
+        |Some ticket -> true
+        |None ->false
+    |None -> false
+
+
+//checkTicket 2 amr 1 1
+
+let bookCancle movieId username row column=
+     userService.BookCancle(movieId,row,column) |> ignore
+     "book Cancled"
+  
+
+//bookCancle 2 1 1
+
+////// amr /////////
