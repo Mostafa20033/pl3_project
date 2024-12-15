@@ -241,18 +241,6 @@ let DisplaySeats movieId=
     
 //DisplaySeats 2 |> List.iter (fun (row , column) -> printfn"row: %d , column:%d" row column)
 
-//check seat availabilty
-let checkAvailablity movieId row column=
-    let seat =userService.GetSeat(movieId,row,column)
-    match seat with
-    | Some Seat -> 
-         if Seat.isAvailable=true then
-            "this seat is available"
-         else
-            "this seat is reserved"
-    | None -> "there is no seat!"
-
-//checkAvailablity 2 1 1
 //login "alice" "password123"
 //signup "mostafa" 01128098800 "mostafa" "password123"
 
