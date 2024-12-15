@@ -322,3 +322,75 @@ let bookCancle movieId username row column=
 //bookCancle 2 1 1
 
 ////// amr /////////
+
+
+
+
+
+
+
+
+///////////abdalla//////////////////////////
+
+
+// Login Page
+and loginPage _ :Form =
+
+    let form = new Form(Text = "Login", Size = Size(800, 600)) 
+    form.StartPosition <- FormStartPosition.CenterScreen 
+
+    createBackground(form)
+
+    let headerLabel = new Label(
+        Text = "Welcome to Cinema",
+        Location = Point((form.ClientSize.Width - 500) / 2, 50), 
+        AutoSize = true,
+        Font = new Font("Arial", 30.0f, FontStyle.Bold),
+        ForeColor = Color.White,
+        BackColor = Color.Transparent
+    )
+    let lblUsername = new Label(Text = "Username:", Location = Point(200, 150), AutoSize = true, Font = new Font("Arial", 18.0f), BackColor = Color.Transparent, ForeColor = Color.White)
+    let txtUsername = new TextBox(Location = Point(400, 150), Width = 250, Font = new Font("Arial", 16.0f), ForeColor = Color.White, BackColor = Color.Black)
+
+    let lblPassword = new Label(Text = "Password:", Location = Point(200, 220), AutoSize = true, Font = new Font("Arial", 18.0f), BackColor = Color.Transparent, ForeColor = Color.White)
+    let txtPassword = new TextBox(Location = Point(400, 220), Width = 250, PasswordChar = '*', Font = new Font("Arial", 16.0f), ForeColor = Color.White, BackColor = Color.Black)
+    txtPassword.PasswordChar <- '*'
+
+    let btnLogin = new Button(Text = "Login", Location = Point(400, 300), Width = 150, Height = 50, BackColor = Color.DarkRed, ForeColor = Color.White, FlatStyle = FlatStyle.Flat)
+
+    let btnSignup = new Button(Text = "Sign Up", Location = Point(560, 300), Width = 150, Height = 50, BackColor = Color.Gray, ForeColor = Color.White, FlatStyle = FlatStyle.Flat)
+    
+    btnLogin.Click.AddHandler(EventHandler(fun _ _ ->
+        let result =   login txtUsername.Text txtPassword.Text
+        match result with
+                | "" -> 
+                        MessageBox.Show("Invalid login") |> ignore   
+                | str -> 
+                       form.Hide()
+                       
+                       mainPage(str).Show()
+    ))
+    
+    btnSignup.Click.AddHandler(EventHandler(fun _ _ ->
+        
+       // signupPage().Show()
+
+    ))
+    form.Controls.Add(lblUsername)
+    form.Controls.Add(txtUsername)
+    form.Controls.Add(lblPassword)
+    form.Controls.Add(txtPassword)
+    form.Controls.Add(btnLogin)
+    form.Controls.Add(btnSignup)
+    form.Controls.Add(headerLabel)
+    //return the form
+
+    form.FormClosed.Add(fun _ -> Application.Exit())
+
+    form
+    
+[<EntryPoint>]
+let main argv =
+
+    Application.Run(loginPage ())
+    0 
