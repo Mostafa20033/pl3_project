@@ -323,7 +323,69 @@ let bookCancle movieId username row column=
 
 ////// amr /////////
 
+/////////////mostafa waleed/////////////////////////
 
+
+
+// Signup Page
+let signupPage () =
+    let form = new Form(Text = "Sign Up", Size = Size(800, 600))
+    form.StartPosition <- FormStartPosition.CenterScreen 
+
+    createBackground(form)
+
+    let headerLabel = new Label(
+        Text = "Welcome to Cinema - Sign Up",
+        Location = Point((form.ClientSize.Width - 500) / 2, 50),   
+        AutoSize = true,
+        Font = new Font("Arial", 30.0f, FontStyle.Bold),
+        ForeColor = Color.White,
+        BackColor = Color.Transparent
+    )
+    let lblUsername = new Label(Text = "Username:", Location = Point(200, 150), AutoSize = true, Font = new Font("Arial", 18.0f), BackColor = Color.Transparent, ForeColor = Color.White)
+    let txtUsername = new TextBox(Location = Point(400, 150), Width = 250, Font = new Font("Arial", 16.0f), ForeColor = Color.White, BackColor = Color.Black)
+
+    let lblPassword = new Label(Text = "Password:", Location = Point(200, 220), AutoSize = true, Font = new Font("Arial", 18.0f), BackColor = Color.Transparent, ForeColor = Color.White)
+    let txtPassword = new TextBox(Location = Point(400, 220), Width = 250, PasswordChar = '*', Font = new Font("Arial", 16.0f), ForeColor = Color.White, BackColor = Color.Black)
+    txtPassword.PasswordChar <- '*'
+
+    let lblName = new Label(Text = "Full Name:", Location = Point(200, 290), AutoSize = true, Font = new Font("Arial", 18.0f), BackColor = Color.Transparent, ForeColor = Color.White)
+    let txtName = new TextBox(Location = Point(400, 290), Width = 250, Font = new Font("Arial", 16.0f), ForeColor = Color.White, BackColor = Color.Black)
+
+    let lblPhone = new Label(Text = "Phone Number:", Location = Point(200, 360), AutoSize = true, Font = new Font("Arial", 18.0f), BackColor = Color.Transparent, ForeColor = Color.White)
+    let txtPhone = new TextBox(Location = Point(400, 360), Width = 250, Font = new Font("Arial", 16.0f), ForeColor = Color.White, BackColor = Color.Black)
+
+    let btnSignup = new Button(Text = "Sign Up", Location = Point(400, 430), Width = 150, Height = 50, BackColor = Color.DarkRed, ForeColor = Color.White, FlatStyle = FlatStyle.Flat)
+
+    
+
+    btnSignup.Click.AddHandler(EventHandler(fun _ _ ->
+        let result = signup txtName.Text (getIntValue(txtPhone.Text)) txtUsername.Text txtPassword.Text
+        if result = "User added successfully!" then
+            MessageBox.Show("success!") |>ignore
+            form.Hide()
+        else
+            MessageBox.Show(result) |>ignore
+    ))
+    form.Controls.Add(lblName)
+    form.Controls.Add(txtName)
+    form.Controls.Add(lblPhone)
+    form.Controls.Add(txtPhone)
+    form.Controls.Add(lblUsername)
+    form.Controls.Add(txtUsername)
+    form.Controls.Add(lblPassword)
+    form.Controls.Add(txtPassword)
+    form.Controls.Add(btnSignup)
+    form.Controls.Add(headerLabel)
+    form.FormClosed.Add(fun _ -> Application.Exit())
+    form
+
+
+
+
+
+
+//////////////mostafa waleed///////////////////////////
 
 
 
@@ -394,3 +456,6 @@ let main argv =
 
     Application.Run(loginPage ())
     0 
+
+
+    //////abdalla//////
